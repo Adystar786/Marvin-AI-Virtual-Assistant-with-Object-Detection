@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marvin - Features & About</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00c6ff;
+            --secondary: #0072ff;
+            --accent: #00ffcc;
+            --dark: #0a0e17;
+            --darker: #050a14;
+            --light: #e6f7ff;
+            --card-bg: rgba(10, 14, 23, 0.8);
+            --card-border: rgba(0, 198, 255, 0.3);
+            --glow: 0 0 15px rgba(0, 198, 255, 0.7);
+            --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            color: var(--light);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            opacity: 0;
+            animation: fadeIn 1.5s ease-out forwards;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* Background Animation */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 114, 255, 0.1) 0%, transparent 70%);
+            animation: rotate 30s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Header Section */
+        #header {
+            text-align: center;
+            padding: 2rem 1rem;
+            position: relative;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: slideDown 1s ease-out 0.5s forwards;
+        }
+
+        @keyframes slideDown {
+            0% { transform: translateY(-50px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--glow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo::before {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: conic-gradient(transparent, var(--accent), transparent);
+            animation: rotate 3s linear infinite;
+        }
+
+        .logo-inner {
+            width: 110px;
+            height: 110px;
+            background: var(--dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: rgba(230, 247, 255, 0.8);
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem 2rem;
+            flex: 1;
+        }
+
+        /* Tabs Navigation */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 0.5rem;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px solid var(--card-border);
+        }
+
+        .tab-btn {
+            padding: 0.8rem 1.5rem;
+            background: transparent;
+            border: none;
+            color: var(--light);
+            cursor: pointer;
+            transition: var(--transition);
+            border-radius: 10px;
+            font-weight: 500;
+            flex: 1;
+        }
+
+        .tab-btn.active {
+            background: rgba(0, 198, 255, 0.3);
+            color: var(--accent);
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: rgba(0, 198, 255, 0.1);
+        }
+
+        /* Content Sections */
+        .content-section {
+            display: none;
+            opacity: 0;
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(10px);
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: slideUp 0.8s ease-out forwards;
+        }
+
+        @keyframes slideUp {
+            0% { transform: translateY(30px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .card-title i {
+            font-size: 1.5rem;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background: rgba(0, 198, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 1px solid rgba(0, 198, 255, 0.2);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            background: rgba(0, 198, 255, 0.1);
+            box-shadow: 0 10px 20px rgba(0, 198, 255, 0.2);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .feature-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.8rem;
+        }
+
+        .feature-desc {
+            color: rgba(230, 247, 255, 0.8);
+            line-height: 1.5;
+            flex: 1;
+        }
+
+        /* About Section */
+        .about-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .about-text {
+            line-height: 1.6;
+            font-size: 1.1rem;
+            color: rgba(230, 247, 255, 0.9);
+        }
+
+        .highlight {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .developer-info {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            background: rgba(0, 198, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 1px solid rgba(0, 198, 255, 0.2);
+            margin-top: 1rem;
+        }
+
+        .developer-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .developer-details h3 {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .developer-details p {
+            color: rgba(230, 247, 255, 0.8);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Footer */
+        footer {
+            position: relative;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(5, 10, 20, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 0;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            z-index: 100;
+            border-top: 1px solid rgba(0, 198, 255, 0.2);
+            margin-top: auto;
+        }
+
+        .nav-btn {
+            background: rgba(0, 198, 255, 0.1);
+            border: 1px solid rgba(0, 198, 255, 0.3);
+            border-radius: 10px;
+            padding: 0.8rem 1.5rem;
+            color: var(--light);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .nav-btn:hover {
+            background: rgba(0, 198, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 198, 255, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .developer-info {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .logo {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .logo-inner {
+                width: 90px;
+                height: 90px;
+            }
+            
+            .tabs {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .card-title {
+                font-size: 1.5rem;
+            }
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    
+    <div id="header">
+        <div class="logo">
+            <div class="logo-inner">
+                <img src="avatar2.gif" alt="Marvin" style="width:100%;height:100%;object-fit:cover;">
+                <div style="width:100%;height:100%;background:linear-gradient(135deg, #00c6ff, #0072ff);display:flex;align-items:center;justify-content:center;color:white;font-size:2rem;">
+                </div>
+            </div>
+        </div>
+        <h1>Marvin</h1>
+        <p class="tagline">Your smart AI assistant with object detection and voice capabilities</p>
+    </div>
+
+    <div class="container">
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="features">Features</button>
+            <button class="tab-btn" data-tab="about">About</button>
+        </div>
+        
+        <div class="content-section active" id="features-content">
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-star"></i> Core Capabilities</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <h3 class="feature-title">Real-time Object Detection</h3>
+                        <p class="feature-desc">Marvin uses TensorFlow.js and COCO-SSD model to detect and identify objects in real-time through your webcam with high accuracy.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-microphone"></i>
+                        </div>
+                        <h3 class="feature-title">Voice Command Recognition</h3>
+                        <p class="feature-desc">Interact with Marvin using natural voice commands. The system uses Web Speech API for seamless voice interactions.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <h3 class="feature-title">Image Analysis</h3>
+                        <p class="feature-desc">Upload images for object detection. Marvin will identify and label objects with confidence percentages.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-cloud-sun"></i>
+                        </div>
+                        <h3 class="feature-title">Weather Information</h3>
+                        <p class="feature-desc">Get real-time weather updates for any location with detailed conditions and temperature information.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                        <h3 class="feature-title">News Updates</h3>
+                        <p class="feature-desc">Stay informed with the latest news headlines from reliable sources across various categories.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-language"></i>
+                        </div>
+                        <h3 class="feature-title">Translation Services</h3>
+                        <p class="feature-desc">Translate text between multiple languages including Hindi, French, Spanish, German, and Japanese.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-route"></i>
+                        </div>
+                        <h3 class="feature-title">Navigation Assistance</h3>
+                        <p class="feature-desc">Get directions and find the easiest routes between locations using integrated Google Maps.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-ticket-alt"></i>
+                        </div>
+                        <h3 class="feature-title">Booking Assistance</h3>
+                        <p class="feature-desc">Quick access to booking platforms for flights, trains, buses, and movie tickets with voice commands.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h3 class="feature-title">Web Search</h3>
+                        <p class="feature-desc">Perform Google searches and get information from Wikipedia directly through voice or text commands.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-cogs"></i> Technical Features</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3 class="feature-title">Machine Learning</h3>
+                        <p class="feature-desc">Powered by TensorFlow.js for client-side machine learning without server dependencies.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3 class="feature-title">Responsive Design</h3>
+                        <p class="feature-desc">Fully responsive interface that works seamlessly across desktop, tablet, and mobile devices.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <h3 class="feature-title">Modern UI/UX</h3>
+                        <p class="feature-desc">Beautiful gradient-based design with smooth animations and intuitive user interactions.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h3 class="feature-title">Local Storage</h3>
+                        <p class="feature-desc">Saves detection history locally in your browser for quick access to previous interactions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-section" id="about-content">
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-info-circle"></i> About Marvin AI</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>Marvin is an <span class="highlight">intelligent virtual assistant</span> designed to demonstrate the capabilities of modern web technologies in creating powerful, browser-based AI applications.</p>
+                        
+                        <p>The project was developed as an <span class="highlight">off-campus initiative</span> to explore the integration of machine learning models directly in the browser, eliminating the need for server-side processing while maintaining high performance.</p>
+                        
+                        <p><span class="highlight">Our main goal</span> with Marvin is to create an accessible, privacy-focused AI assistant that can perform complex tasks like object detection, voice recognition, and natural language processing entirely on the client side.</p>
+                        
+                        <p><span class="highlight">The motivation</span> behind building Marvin stems from the desire to push the boundaries of what's possible with modern web technologies. By leveraging TensorFlow.js and Web APIs, we've created an assistant that works across devices without installations or complex setups.</p>
+                        
+                        <p>Marvin represents the future of <span class="highlight">edge computing</span> in web applications, where powerful AI capabilities are brought directly to users' browsers, ensuring privacy, reducing latency, and providing seamless experiences.</p>
+                    </div>
+                    
+                    <div class="developer-info">
+                        <div class="developer-avatar">
+                            MA
+                        </div>
+                        <div class="developer-details">
+                            <h3>Mohammed Adnan</h3>
+                            <p>Developer & Creator of Marvin AI</p>
+                            <p>Passionate about AI, machine learning, and creating innovative web applications that push technological boundaries.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-rocket"></i> Technology Stack</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fab fa-js-square"></i>
+                        </div>
+                        <h3 class="feature-title">TensorFlow.js</h3>
+                        <p class="feature-desc">JavaScript library for training and deploying ML models in the browser.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3 class="feature-title">COCO-SSD Model</h3>
+                        <p class="feature-desc">Pre-trained object detection model capable of identifying 80 different object classes.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-comment-alt"></i>
+                        </div>
+                        <h3 class="feature-title">Web Speech API</h3>
+                        <p class="feature-desc">Provides speech recognition and synthesis capabilities directly in the browser.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fab fa-html5"></i>
+                        </div>
+                        <h3 class="feature-title">HTML5 & CSS3</h3>
+                        <p class="feature-desc">Modern web standards for structure, styling, and responsive design.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <a href="marvin.html" class="nav-btn">
+            <i class="fas fa-home"></i> Home
+        </a>
+    </footer>
+
+    <script>
+        // Tab functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const contentSections = document.querySelectorAll('.content-section');
+            
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remove active class from all buttons and sections
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    contentSections.forEach(section => section.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    btn.classList.add('active');
+                    
+                    // Show corresponding content section
+                    const tabId = btn.getAttribute('data-tab');
+                    document.getElementById(`${tabId}-content`).classList.add('active');
+                });
+            });
+            
+            // Add staggered animation to feature cards
+            const featureCards = document.querySelectorAll('.feature-card');
+            featureCards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+    </script>
+</body>
+</html>
