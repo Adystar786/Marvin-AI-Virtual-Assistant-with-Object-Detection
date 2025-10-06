@@ -2142,7 +2142,6 @@ function isBasicCommand(command) {
 
         // Pro Mode Configuration
 // Pro Mode Configuration
-const GROQ_API_KEY = 'your-groq-api-key';
 const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
 
 let proModeActive = false;
@@ -2235,14 +2234,13 @@ if (normalText) {
     console.log("Pro Mode Disengaged - Standard Mode");
 }
 
-// Enhanced Groq API function for Pro Mode
 async function queryGroqAPI(message) {
     if (!proModeActive) {
         return "Pro Mode is not active. Enable PRO MODE for advanced AI capabilities.";
     }
     
     try {
-        // Show thinking message with Pro Mode styling
+        // Show thinking message
         const thinkingMsg = document.createElement('div');
         thinkingMsg.className = 'message marvin-message pro-mode-thinking';
         thinkingMsg.innerHTML = `
@@ -2259,28 +2257,13 @@ async function queryGroqAPI(message) {
         document.getElementById('conversation').appendChild(thinkingMsg);
         document.getElementById('conversation').scrollTop = document.getElementById('conversation').scrollHeight;
         
-        const response = await fetch(GROQ_API_URL, {
+        // Call Netlify Function instead of Groq directly
+        const response = await fetch('/.netlify/functions/groq-proxy', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${GROQ_API_KEY}`,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                model: 'llama-3.1-8b-instant',
-                messages: [
-                    {
-                        role: 'system',
-                        content: 'You are MARVIN PRO - an advanced AI assistant operating in maximum performance mode. Provide concise, powerful, and highly intelligent responses. You have enhanced capabilities and faster processing.'
-                    },
-                    {
-                        role: 'user',
-                        content: message
-                    }
-                ],
-                temperature: 0.8,
-                max_tokens: 1024,
-                stream: false
-            })
+            body: JSON.stringify({ message: message })
         });
         
         if (!response.ok) {
@@ -2296,7 +2279,6 @@ async function queryGroqAPI(message) {
         
     } catch (error) {
         console.error('Groq API Error:', error);
-        // Remove thinking message on error
         const thinkingMsg = document.querySelector('.pro-mode-thinking');
         if (thinkingMsg) thinkingMsg.remove();
         
@@ -2370,5 +2352,4 @@ document.head.appendChild(style);
         
     </script>
 </body>
-
 </html>
